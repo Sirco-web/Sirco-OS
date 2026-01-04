@@ -28,13 +28,13 @@ if [ -d "$V86_DIR" ]; then
     rm -rf "$V86_DIR"
 fi
 
-# Clone with git (HTTPS, no SSH = no cert issues)
+# Clone with git (disable SSL verification for Docker environments without ca-certificates)
 echo "Cloning v86 from GitHub (HTTPS)..."
-git clone --depth 1 "$V86_REPO" "$V86_DIR"
+GIT_SSL_NO_VERIFY=true git clone --depth 1 "$V86_REPO" "$V86_DIR"
 
 # Fetch the specific commit and checkout
 cd "$V86_DIR"
-git fetch --depth 1 origin "$V86_COMMIT"
+GIT_SSL_NO_VERIFY=true git fetch --depth 1 origin "$V86_COMMIT"
 git checkout "$V86_COMMIT"
 cd "$PROJECT_ROOT"
 
