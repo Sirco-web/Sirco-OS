@@ -154,8 +154,11 @@ rootfs: FORCE
 v86: libv86.js build/lib/v86.wasm
 	cp -r v86/bios public
 
-libv86.js: v86/src/*.js v86/lib/*.js v86/src/browser/*.js
+# Use FORCE to always check, since glob patterns don't work well as prerequisites
+libv86.js: FORCE
+	@if [ ! -d "v86/src" ]; then echo "ERROR: v86/src not found"; exit 1; fi
 	cd v86; make build/libv86.js
+	mkdir -p build/lib
 	cp v86/build/libv86.js build/lib/libv86.js
 
 build/lib/v86.wasm: $(RUST_FILES) v86/build/softfloat.o v86/build/zstddeclib.o v86/Cargo.toml
