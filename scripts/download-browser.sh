@@ -9,7 +9,7 @@ BROWSER_DIR="public"
 EXTERNAL_SERVER="https://browser-app.is-a.lol"
 WISP_URL="wss://browser-app.is-a.lol/wisp/"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOWNLOAD_SCRIPT="$SCRIPT_DIR/download-file.js"
+DOWNLOAD_SCRIPT="$SCRIPT_DIR/download-file.cjs"
 
 echo "=== Downloading Scram-aurora browser files ==="
 

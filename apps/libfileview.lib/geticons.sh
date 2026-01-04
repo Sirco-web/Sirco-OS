@@ -6,7 +6,7 @@ fi
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-JQ_SHIM="$SCRIPT_DIR/../../scripts/jq-shim.js"
+JQ_SHIM="$SCRIPT_DIR/../../scripts/jq-shim.cjs"
 
 git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git papirus
 mkdir icons

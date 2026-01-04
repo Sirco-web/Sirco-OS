@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Simple jq replacement for extracting JSON values
-// Usage: node jq-shim.js '.key' file.json
-// Usage: echo '{"key":"value"}' | node jq-shim.js '.key'
-// Usage: node jq-shim.js -r '.key' file.json (raw output without quotes)
-// Usage: node jq-shim.js -Rnc '[inputs]' (read lines as JSON array)
+// Usage: node jq-shim.cjs '.key' file.json
+// Usage: echo '{"key":"value"}' | node jq-shim.cjs '.key'
+// Usage: node jq-shim.cjs -r '.key' file.json (raw output without quotes)
+// Usage: node jq-shim.cjs -Rnc '[inputs]' (read lines as JSON array)
 
 const fs = require('fs');
 

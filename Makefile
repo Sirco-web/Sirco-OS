@@ -48,13 +48,13 @@ build/libs/libcurl/version: build/bootstrap
 	mkdir -p build/libs/libcurl
 	cp node_modules/libcurl.js/libcurl.mjs build/libs/libcurl/libcurl.mjs
 	cp node_modules/libcurl.js/libcurl.wasm build/libs/libcurl/libcurl.wasm
-	node scripts/jq-shim.js '.version' node_modules/libcurl.js/package.json > build/libs/libcurl/version
+	node scripts/jq-shim.cjs '.version' node_modules/libcurl.js/package.json > build/libs/libcurl/version
 
 build/libs/filer/filer.min.js: build/bootstrap
 	mkdir -p build/libs/filer
 	cp node_modules/filer/dist/filer.min.js build/libs/filer/filer.min.js
 	cp node_modules/filer/dist/filer.min.js.map build/libs/filer/filer.min.js.map
-	node scripts/jq-shim.js '.version' node_modules/filer/package.json > build/libs/filer/version
+	node scripts/jq-shim.cjs '.version' node_modules/filer/package.json > build/libs/filer/version
 
 build/libs/comlink/comlink.min.mjs: build/bootstrap
 	mkdir -p build/libs/comlink
@@ -63,23 +63,23 @@ build/libs/comlink/comlink.min.mjs: build/bootstrap
 	cp node_modules/comlink/dist/umd/comlink.min.js build/libs/comlink/comlink.min.umd.js
 	cp node_modules/comlink/dist/umd/comlink.min.js.map build/libs/comlink/comlink.min.umd.js.map
 	sed -i build/libs/comlink/comlink.min.umd.js -e 's|//# sourceMappingURL=comlink.min.js.map|//# sourceMappingURL=comlink.min.umd.js.map|'
-	node scripts/jq-shim.js '.version' node_modules/comlink/package.json > build/libs/comlink/version
+	node scripts/jq-shim.cjs '.version' node_modules/comlink/package.json > build/libs/comlink/version
 
 build/libs/workbox/version: build/bootstrap
 	mkdir -p build/libs/workbox
 	npx workbox-cli copyLibraries build/libs/workbox/
-	node scripts/jq-shim.js '.version' node_modules/workbox-build/package.json > build/libs/workbox/version
+	node scripts/jq-shim.cjs '.version' node_modules/workbox-build/package.json > build/libs/workbox/version
 
 build/libs/mime/mime.iife.js: build/bootstrap
 	mkdir -p build/libs/mime
 	cp -r node_modules/mime/dist/* build/libs/mime 
 	npx rollup -f iife build/libs/mime/src/index.js -o build/libs/mime/mime.iife.js -n mime --exports named
-	node scripts/jq-shim.js '.version' node_modules/mime/package.json > build/libs/mime/version
+	node scripts/jq-shim.cjs '.version' node_modules/mime/package.json > build/libs/mime/version
 
 build/libs/idb-keyval/idb-keyval.js: build/bootstrap
 	mkdir -p build/libs/idb-keyval
 	cp node_modules/idb-keyval/dist/umd.js build/libs/idb-keyval/idb-keyval.js
-	node scripts/jq-shim.js '.version' node_modules/idb-keyval/package.json > build/libs/idb-keyval/version
+	node scripts/jq-shim.cjs '.version' node_modules/idb-keyval/package.json > build/libs/idb-keyval/version
 
 # keeping this for when we change from this version of the library
 # build/libs/bare-mux/index.js: build/bootstrap \
@@ -87,13 +87,13 @@ build/libs/idb-keyval/idb-keyval.js: build/bootstrap
 	cp node_modules/@mercuryworkshop/bare-mux/dist/index.js build/libs/bare-mux/index.js \
 	cp node_modules/@mercuryworkshop/bare-mux/dist/index.js.map build/libs/bare-mux/index.js.map \
 	cp node_modules/@mercuryworkshop/bare-mux/dist/worker.js build/libs/bare-mux/worker.js \
-	node scripts/jq-shim.js '.version' node_modules/@mercuryworkshop/bare-mux/package.json > build/libs/bare-mux/version
+	node scripts/jq-shim.cjs '.version' node_modules/@mercuryworkshop/bare-mux/package.json > build/libs/bare-mux/version
 
 build/libs/bare-mux/bare.cjs: build/bootstrap
 	mkdir -p build/libs/bare-mux
 	cp node_modules/@mercuryworkshop/bare-mux/dist/bare.cjs build/libs/bare-mux/bare.cjs
 	cp node_modules/@mercuryworkshop/bare-mux/dist/bare.cjs.map build/libs/bare-mux/bare.cjs.map
-	node scripts/jq-shim.js '.version' node_modules/@mercuryworkshop/bare-mux/package.json > build/libs/bare-mux/version
+	node scripts/jq-shim.cjs '.version' node_modules/@mercuryworkshop/bare-mux/package.json > build/libs/bare-mux/version
 
 build/uv/uv.bundle.js: build/bootstrap
 	mkdir -p build/uv
@@ -105,19 +105,19 @@ build/uv/uv.bundle.js: build/bootstrap
 	cp node_modules/@titaniumnetwork-dev/ultraviolet/dist/uv.handler.js.map build/uv/uv.handler.js.map
 	cp node_modules/@titaniumnetwork-dev/ultraviolet/dist/uv.sw.js build/uv/uv.sw.js
 	cp node_modules/@titaniumnetwork-dev/ultraviolet/dist/uv.sw.js.map build/uv/uv.sw.js.map
-	node scripts/jq-shim.js '.version' node_modules/@titaniumnetwork-dev/ultraviolet/package.json > build/uv/version
+	node scripts/jq-shim.cjs '.version' node_modules/@titaniumnetwork-dev/ultraviolet/package.json > build/uv/version
 
 build/libs/fflate/browser.js: build/bootstrap
 	mkdir -p build/libs/fflate
 	cp node_modules/fflate/esm/browser.js build/libs/fflate/browser.js
-	node scripts/jq-shim.js '.version' node_modules/fflate/package.json > build/libs/fflate/version
+	node scripts/jq-shim.cjs '.version' node_modules/fflate/package.json > build/libs/fflate/version
 
 build/libs/dreamland/all.js: dreamlandjs/src/*
 	mkdir -p build/libs/dreamland
 	cd dreamlandjs; npm i --no-package-lock --legacy-peer-deps; npm run build
 	cp dreamlandjs/dist/all.js build/libs/dreamland/all.js
 	cp dreamlandjs/dist/all.js.map build/libs/dreamland/all.js.map
-	node scripts/jq-shim.js '.version' dreamlandjs/package.json > build/libs/dreamland/version
+	node scripts/jq-shim.cjs '.version' dreamlandjs/package.json > build/libs/dreamland/version
 
 build/libs/nfsadapter/nfsadapter.js: native-file-system-adapter/src/es6.js native-file-system-adapter/src/adapters/filer.js
 	cd native-file-system-adapter; npm i; npm run build
@@ -130,7 +130,7 @@ build/libs/nfsadapter/nfsadapter.js: native-file-system-adapter/src/es6.js nativ
 
 build/assets/matter.css:
 	mkdir -p build/assets
-	node scripts/download-file.js https://github.com/finnhvman/matter/releases/latest/download/matter.css build/assets/matter.css
+	node scripts/download-file.cjs https://github.com/finnhvman/matter/releases/latest/download/matter.css build/assets/matter.css
 
 apps/libfileview.lib/icons: apps/libfileview.lib/icons.json
 	cd apps/libfileview.lib; bash geticons.sh
@@ -204,7 +204,7 @@ build/lib/v86.wasm: FORCE
 	fi
 
 build/cache-load.json: FORCE
-	(find apps/ -type f && cd build/ && find lib/ -type f && find libs/ -type f && find uv/ -type f && find assets/ -type f && find bundle.css -type f && cd ../public/ && find . -type f)| grep -v -e node_modules -e \.map -e \.d\.ts -e "/\." -e "uv/" -e "workbox/" | node scripts/jq-shim.js -Rnc '[inputs]' > build/cache-load.json
+	(find apps/ -type f && cd build/ && find lib/ -type f && find libs/ -type f && find uv/ -type f && find assets/ -type f && find bundle.css -type f && cd ../public/ && find . -type f)| grep -v -e node_modules -e \.map -e \.d\.ts -e "/\." -e "uv/" -e "workbox/" | node scripts/jq-shim.cjs -Rnc '[inputs]' > build/cache-load.json
 
 public/config.json:
 	cp config.default.json public/config.json
@@ -215,7 +215,7 @@ watch: bundle FORCE
 bundle: tsc css lint milestone
 	mkdir -p build/artifacts
 
-ANURA_VERSION = $(shell node scripts/jq-shim.js -r '.version' package.json)
+ANURA_VERSION = $(shell node scripts/jq-shim.cjs -r '.version' package.json)
 
 tsc:
 	mkdir -p build/artifacts
@@ -227,7 +227,7 @@ tsc:
 	cd build/; \
 	(find lib -type f -name "*.d.ts" -exec cp --parents {} ../anuraos-types/ \;)
 	(cd build && find lib -type f -name "*.d.ts") | sed 's/ \+/\n/g' | sed 's|.*|/// <reference path="&" />|' > anuraos-types/index.d.ts
-	node scripts/jq-shim.js 'del(.dependencies, .devDependencies) | .name = "@mercuryworkshop/anuraos-types" | .description = "Type declarations for anuraOS" | .types = "index.d.ts"' package.json > anuraos-types/package.json
+	node scripts/jq-shim.cjs 'del(.dependencies, .devDependencies) | .name = "@mercuryworkshop/anuraos-types" | .description = "Type declarations for anuraOS" | .types = "index.d.ts"' package.json > anuraos-types/package.json
 	
 css: src/*.css
 	# shopt -s globstar; cat src/**/*.css | npx postcss --use autoprefixer -o build/bundle.css
