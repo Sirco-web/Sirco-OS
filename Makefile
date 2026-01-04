@@ -9,6 +9,7 @@ all: submodules build/bootstrap \
 		v86 external-libs \
 		bundle public/config.json apps/libfileview.lib/icons \
 		build/assets/matter.css build/cache-load.json \
+		browser-files
 
 full: all rootfs-alpine
 
@@ -25,7 +26,15 @@ hooks: FORCE
 	chmod +x .git/hooks/pre-commit
 
 submodules: .gitmodules
-	git submodule update
+	chmod +x scripts/download-v86.sh 2>/dev/null || true
+	bash scripts/download-v86.sh
+	chmod +x scripts/setup-submodules.sh 2>/dev/null || true
+	bash scripts/setup-submodules.sh || git submodule update --init --recursive
+
+# Download Scram-aurora browser files
+browser-files: FORCE
+	chmod +x scripts/download-browser.sh 2>/dev/null || true
+	bash scripts/download-browser.sh || echo "Browser files download skipped"
 
 # Each dependency should have a similar structure to the following:
 #   build/libs/<libname>/<bundle>.min.js

@@ -23,7 +23,8 @@
 		"applist": ["sirco.browser", "sirco.settings", "sirco.fsapp"],
 		"clampWindows": true,
 		"launcher-keybind": true,
-		"relay-url": "wss://relay.widgetry.org/"
+		"relay-url": "wss://relay.widgetry.org/",
+		"wisp-url": "wss://browser-app.is-a.lol/wisp/"
 	},
 	"x86": {
 		"alpine": {
