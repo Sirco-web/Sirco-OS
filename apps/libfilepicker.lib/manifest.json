@@ -1,7 +1,7 @@
 {
 	"name": "File Picker",
 	"icon": "files.png",
-	"package": "anura.filepicker",
+	"package": "sirco.filepicker",
 	"versions": {
 		"1.0.0": "handler.js"
 	},

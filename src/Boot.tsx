@@ -41,7 +41,7 @@ channel.addEventListener("message", (msg) => {
             </head>
             <body>
             <div id="wrapper">
-            <h1>AnuraOS is already running in another tab</h1>
+            <h1>Sirco OS is already running in another tab</h1>
             <p>Please close the other tab and reload.</p>
             </div>
             </body>
@@ -255,8 +255,8 @@ window.addEventListener("load", async () => {
 
 	/**
 	 * This is a migration for the new directory structure
-	 * introduced in AnuraOS 2.0.0. This is to ensure that
-	 * users who have been using AnuraOS for a while can
+	 * introduced in Sirco OS 2.0.0. This is to ensure that
+	 * users who have been using Sirco OS for a while can
 	 * have a consistent experience with new installations.
 	 */
 	const map = {
@@ -272,9 +272,9 @@ window.addEventListener("load", async () => {
 
 		if (needsMigration.length > 0) {
 			anura.notifications.add({
-				title: "Anura Update",
+				title: "Sirco Update",
 				description:
-					"AnuraOS has been updated to a new version. Users are recommended to change the installation directory of their apps and libraries to /usr/ to ensure consistency with new installations.",
+					"Sirco OS has been updated to a new version. Users are recommended to change the installation directory of their apps and libraries to /usr/ to ensure consistency with new installations.",
 				timeout: "never",
 				buttons: [
 					{
@@ -610,7 +610,7 @@ document.addEventListener("anura-login-completed", async () => {
 		"Set wallpaper & style",
 		() => {
 			// this however will execute after anura is init'ed
-			anura.apps["anura.wallpaper"].open();
+			anura.apps["sirco.wallpaper"].open();
 		},
 		"brush",
 	);
@@ -686,11 +686,11 @@ async function bootUserCustomizations() {
 		const recovery = new RecoveryApp();
 		anura.registerApp(recovery);
 		anura.notifications.add({
-			title: "Anura Error",
+			title: "Sirco Error",
 			description:
-				"Anura has detected a system fault and booted in safe mode. Click this notification to enter the recovery app.",
+				"Sirco OS has detected a system fault and booted in safe mode. Click this notification to enter the recovery app.",
 			timeout: "never",
-			callback: () => anura.apps["anura.recovery"].open(),
+			callback: () => anura.apps["sirco.recovery"].open(),
 		});
 
 		const safeMode = document.createElement("span");
@@ -793,7 +793,7 @@ function setupTNBootsplash() {
 	TNMark.innerHTML =
 		"Instance hosted by Titanium Network.<br>More mirrors at discord.gg/unblock";
 	TNMark.onclick = () => {
-		anura.apps["anura.browser"].open([
+		anura.apps["sirco.browser"].open([
 			"https://discord.com/invite/unblock/login",
 		]);
 	};

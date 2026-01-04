@@ -297,7 +297,7 @@ class QuickSettings {
 					<div class={["topButtons"]}>
 						<button
 							class={["matter-button-contained", "symbolButton"]}
-							title="Exit anuraOS"
+							title="Exit Sirco OS"
 							on:click={() => {
 								window.location.replace(
 									anura.settings.get("exitUrl") || "https://google.com/",
@@ -309,7 +309,7 @@ class QuickSettings {
 						<button
 							class={["matter-button-contained", "symbolButton"]}
 							on:click={() => {
-								anura.apps["anura.settings"].open();
+								anura.apps["sirco.settings"].open();
 								this.close();
 							}}
 						>

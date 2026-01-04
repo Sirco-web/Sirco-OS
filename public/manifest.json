@@ -1,5 +1,5 @@
 {
-	"name": "AnuraOS",
+	"name": "Sirco OS",
 	"icons": [
 		{
 			"src": "pwa_icon.png",
@@ -8,7 +8,7 @@
 			"purpose": "any maskable"
 		}
 	],
-	"short_name": "AnuraOS",
+	"short_name": "Sirco OS",
 	"start_url": "/",
 	"display_override": [
 		"window-controls-overlay",

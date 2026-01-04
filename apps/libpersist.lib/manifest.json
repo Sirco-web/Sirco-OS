@@ -1,7 +1,7 @@
 {
-	"name": "AnuraOS Persistent Storage",
+	"name": "Sirco OS Persistent Storage",
 	"icon": "icon.svg",
-	"package": "anura.persistence",
+	"package": "sirco.persistence",
 	"versions": {
 		"1.0.0": "src/index.js"
 	},

@@ -1,13 +1,13 @@
 {
-	"name": "anuraos",
-	"version": "2.0.0",
+	"name": "sirco-os",
+	"version": "1.0.0",
 	"type": "module",
-	"description": "webOS that has v86 capabilities and a modular app system",
+	"description": "Sirco OS - webOS with v86 capabilities and a modular app system",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/MercuryWorkshop/anuraOS"
+		"url": "https://github.com/Sirco-web/Sirco-OS"
 	},
-	"author": "Mercury Workshop",
+	"author": "Sirco",
 	"license": "AGPL-3.0-only",
 	"bugs": {
 		"url": "https://github.com/MercuryWorkshop/AnuraOS/issues"

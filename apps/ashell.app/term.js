@@ -1,4 +1,4 @@
-const hterm = (await anura.import("anura.hterm")).default;
+const hterm = (await anura.import("sirco.hterm")).default;
 const exit = env.process.kill.bind(env.process);
 
 const url = new URL(window.location.href);
@@ -62,8 +62,8 @@ if (!argmap.cmd) {
 	argmap.cmd = shell;
 }
 
-const config = anura.settings.get("anura-shell-config") || {};
-anura.settings.set("anura-shell-config", config);
+const config = anura.settings.get("sirco-shell-config") || {};
+anura.settings.set("sirco-shell-config", config);
 
 const term = (globalThis.term = new hterm.Terminal());
 const $term = document.getElementById("terminal");

@@ -1,8 +1,8 @@
 import RepoList from "./screens/RepoList.mjs";
 import ItemList from "./screens/ItemList.mjs";
 import Overview from "./screens/Overview.mjs";
-const { Store } = await anura.import("anura.libstore@2.0.0");
-const persist = await anura.import("anura.persistence");
+const { Store } = await anura.import("sirco.libstore@2.0.0");
+const persist = await anura.import("sirco.persistence");
 const loader = persist.buildLoader(anura);
 await loader.locate();
 const persistence = await loader.build(instance);
@@ -31,12 +31,12 @@ document.addEventListener("anura-theme-change", () => {
 window.saved = $state({
 	repos: Object.entries(
 		(await persistence.get("repos")) || {
-			"Anura App Repository":
+			"Sirco App Repository":
 				"https://raw.githubusercontent.com/MercuryWorkshop/anura-repo/master/",
-			"Anura Developer Repository":
+			"Sirco Developer Repository":
 				"https://raw.githubusercontent.com/MercuryWorkshop/anura-developer-repo/master/",
-			"Anura Games": "https://games.anura.pro/",
-			"Anura Extras":
+			"Sirco Games": "https://games.anura.pro/",
+			"Sirco Extras":
 				"https://raw.githubusercontent.com/BomberFish/anura-repo/master/",
 		},
 	),

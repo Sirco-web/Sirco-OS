@@ -1,7 +1,7 @@
 {
 	"name": "Marketplace",
 	"type": "auto",
-	"package": "anura.store",
+	"package": "sirco.store",
 	"index": "index.html",
 	"icon": "playstore.webp",
 	"wininfo": {

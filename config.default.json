@@ -20,7 +20,7 @@
 	],
 	"defaultsettings": {
 		"use-sw-cache": false,
-		"applist": ["anura.browser", "anura.settings", "anura.fsapp"],
+		"applist": ["sirco.browser", "sirco.settings", "sirco.fsapp"],
 		"clampWindows": true,
 		"launcher-keybind": true,
 		"relay-url": "wss://relay.widgetry.org/"

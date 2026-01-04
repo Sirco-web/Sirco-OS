@@ -222,7 +222,7 @@ const SettingText: Component<{
 
 class SettingsApp extends App {
 	name = "Settings";
-	package = "anura.settings";
+	package = "sirco.settings";
 	icon = "/assets/icons/settings.png";
 	win: WMWindow;
 
@@ -320,19 +320,60 @@ class SettingsApp extends App {
 								callback={async () => {
 									if (
 										await anura.dialog.confirm(
-											"This will restart Anura. Are you sure?\nYour data will not be accessible",
+											"This will restart Sirco OS. Are you sure?\nYour data will not be accessible",
 										)
 									) {
 										await (window as any).idbKeyval.set(
 											"bootFromOPFS",
 											!(await (window as any).idbKeyval.get("bootFromOPFS")),
 										);
+										await (window as any).idbKeyval.set("bootFromUserFS", false);
 										window.location.reload();
 									} else {
 										anura.settings.set(
 											"bootFromOpfs",
 											!anura.settings.get("bootFromOpfs"),
 										);
+									}
+								}}
+							/>
+							<SettingSwitch
+								title="Save to User Folder/USB"
+								setting="bootFromUserFS"
+								callback={async () => {
+									if (!UserFS.isSupported()) {
+										anura.dialog.alert(
+											"Your browser does not support the File System Access API. Please use a Chromium-based browser.",
+											"Not Supported",
+										);
+										return;
+									}
+									
+									const currentlyEnabled = await (window as any).idbKeyval.get("bootFromUserFS");
+									
+									if (currentlyEnabled) {
+										// Disabling - clear stored handle
+										if (
+											await anura.dialog.confirm(
+												"This will switch back to browser storage and restart Sirco OS. Continue?",
+											)
+										) {
+											await UserFS.clearStoredHandle();
+											await (window as any).idbKeyval.set("bootFromUserFS", false);
+											window.location.reload();
+										}
+									} else {
+										// Enabling - prompt to select folder
+										const userFs = await UserFS.selectUserFolder("/");
+										if (userFs) {
+											await (window as any).idbKeyval.set("bootFromUserFS", true);
+											await (window as any).idbKeyval.set("bootFromOPFS", false);
+											anura.dialog.alert(
+												"Files will now be saved to your selected folder. Sirco OS will restart.",
+												"Storage Location Set",
+											);
+											window.location.reload();
+										}
 									}
 								}}
 							/>
@@ -351,7 +392,7 @@ class SettingsApp extends App {
 								setting="clampWindows"
 							/>
 							<SettingSwitch
-								title="Transparent Anura Shell Background"
+								title="Transparent Sirco Shell Background"
 								setting="transparent-ashell"
 							/>
 							<SettingSwitch
@@ -360,10 +401,14 @@ class SettingsApp extends App {
 							/>
 							<SettingText title="Custom Wisp URL" setting="wisp-url" />
 							<SettingText title="Custom Power Off URL" setting="exitUrl" />
+							<SettingText 
+								title="Scram Browser Server URL" 
+								setting="scram-browser-url" 
+							/>
 						</div>
 					</div>
 					<div id="v86" class="v86 settings-category">
-						<h3 class="settings-category-name">Anura x86</h3>
+						<h3 class="settings-category-name">Sirco x86</h3>
 						<div class="settings-group">
 							{this.state.show_x86_install ? (
 								<div>

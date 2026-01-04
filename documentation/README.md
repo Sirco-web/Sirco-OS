@@ -1,9 +1,9 @@
-# The Anura Documentation
+# The Sirco OS Documentation
 
-**Index of Anura Documentation:**
+**Index of Sirco OS Documentation:**
 
-## [The Anura API](./Anura-API.md)
+## [The Sirco API](./Anura-API.md)
 
-## [Anura App Development](./appdevt.md)
+## [Sirco App Development](./appdevt.md)
 
 ## [Marketplace Documentation](./marketplace.md)

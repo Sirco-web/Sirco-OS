@@ -1,6 +1,6 @@
 class GenericApp extends App {
 	name = "Generic App";
-	package = "anura.generic";
+	package = "sirco.generic";
 	icon = "/assets/icons/generic.svg";
 	hidden = true;
 	constructor() {

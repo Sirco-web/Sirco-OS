@@ -53,15 +53,41 @@ class Anura {
 
 	static async new(config: any): Promise<Anura> {
 		// File System Initialization //
-		let fsProvider = new FilerAFSProvider(
-			new Filer.FileSystem({
-				name: "anura-mainContext",
-				provider: new Filer.FileSystem.providers.IndexedDB(),
-			}),
-		);
-		if (await (window as any).idbKeyval.get("bootFromOPFS")) {
+		let fsProvider: AFSProvider<any>;
+		
+		// Priority: 1. UserFS (user folder/USB), 2. OPFS, 3. IndexedDB
+		const useUserFS = await (window as any).idbKeyval.get("bootFromUserFS");
+		const useOPFS = await (window as any).idbKeyval.get("bootFromOPFS");
+		
+		if (useUserFS && UserFS.isSupported()) {
+			// Try to restore from stored handle first
+			const userFs = await UserFS.fromStoredHandle("/");
+			if (userFs) {
+				fsProvider = userFs as any;
+				console.log("SircoOS: Booting from UserFS (user folder/USB)");
+			} else {
+				// Fall back to OPFS or IndexedDB
+				console.log("SircoOS: UserFS handle expired, falling back");
+				fsProvider = new FilerAFSProvider(
+					new Filer.FileSystem({
+						name: "sirco-mainContext",
+						provider: new Filer.FileSystem.providers.IndexedDB(),
+					}),
+				);
+			}
+		} else if (useOPFS) {
 			fsProvider = (await LocalFS.newRootOPFS()) as any;
+			console.log("SircoOS: Booting from OPFS");
+		} else {
+			fsProvider = new FilerAFSProvider(
+				new Filer.FileSystem({
+					name: "sirco-mainContext",
+					provider: new Filer.FileSystem.providers.IndexedDB(),
+				}),
+			);
+			console.log("SircoOS: Booting from IndexedDB");
 		}
+		
 		const fs = new AnuraFilesystem([fsProvider]);
 
 		const settings = await Settings.new(fs, config.defaultsettings);
@@ -76,11 +102,11 @@ class Anura {
 	apps: any = {};
 	libs: any = {};
 	logger = {
-		log: console.log.bind(console, "anuraOS:"),
-		debug: console.debug.bind(console, "anuraOS:"),
-		info: console.info.bind(console, "anuraOS:"),
-		warn: console.warn.bind(console, "anuraOS:"),
-		error: console.error.bind(console, "anuraOS:"),
+		log: console.log.bind(console, "SircoOS:"),
+		debug: console.debug.bind(console, "SircoOS:"),
+		info: console.info.bind(console, "SircoOS:"),
+		warn: console.warn.bind(console, "SircoOS:"),
+		error: console.error.bind(console, "SircoOS:"),
 
 		// Create a set of streams for stdio to pipe to, useful for debugging
 		createStreams: (prefix?: string) => {
@@ -92,7 +118,7 @@ class Anura {
 						if (typeof message !== "string") {
 							message = new TextDecoder().decode(message);
 						}
-						console.log(`anuraOS: ${prefix ? `[${prefix}] ` : ""}${message}`);
+						console.log(`SircoOS: ${prefix ? `[${prefix}] ` : ""}${message}`);
 					},
 				}),
 
@@ -101,7 +127,7 @@ class Anura {
 						if (typeof message !== "string") {
 							message = new TextDecoder().decode(message);
 						}
-						console.error(`anuraOS: ${prefix ? `[${prefix}] ` : ""}${message}`);
+						console.error(`SircoOS: ${prefix ? `[${prefix}] ` : ""}${message}`);
 					},
 				}),
 			};
@@ -161,7 +187,7 @@ class Anura {
 		if (!handlers || !handlers[manifest.type]) {
 			const error = `Could not register external app from source: "${source}" because no external handlers are registered for type "${manifest.type}"`;
 			anura.notifications.add({
-				title: "AnuraOS",
+				title: "Sirco OS",
 				description: error,
 			});
 			throw error;
@@ -171,7 +197,7 @@ class Anura {
 		if (!handlerModule) {
 			const error = `Failed to load external app handler ${handler}`;
 			anura.notifications.add({
-				title: "AnuraOS",
+				title: "Sirco OS",
 				description: error,
 			});
 			throw error;
@@ -179,7 +205,7 @@ class Anura {
 		if (!handlerModule.createApp) {
 			const error = `Handler ${handler} does not have a createApp function`;
 			anura.notifications.add({
-				title: "AnuraOS",
+				title: "Sirco OS",
 				description: error,
 			});
 			throw error;

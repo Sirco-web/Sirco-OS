@@ -5,7 +5,7 @@ import {
 	getFolderAppIcon,
 } from "./appHandler.js";
 
-const { ShortcutApp } = await anura.import("anura.globalscope");
+const { ShortcutApp } = await anura.import("sirco.globalscope");
 
 const icons = await (await fetch(localPathToURL("icons.json"))).json();
 

@@ -1,7 +1,7 @@
 export function selectFile(options) {
 	const defaultOptions = {
 		regex: ".*",
-		app: anura.apps["anura.fsapp"],
+		app: anura.apps["sirco.fsapp"],
 		multiple: false,
 	};
 	options = Object.assign({}, defaultOptions, options);
@@ -55,7 +55,7 @@ export function selectFile(options) {
 export function selectFolder(options) {
 	const defaultOptions = {
 		regex: "",
-		app: anura.apps["anura.fsapp"],
+		app: anura.apps["sirco.fsapp"],
 		multiple: false,
 	};
 	options = Object.assign({}, defaultOptions, options);

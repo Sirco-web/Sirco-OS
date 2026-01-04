@@ -58,16 +58,16 @@ class ShortcutApp extends App implements AnuraShortcut {
 	}
 
 	name = "Shortcut";
-	package = "anura.shortcut";
+	package = "sirco.shortcut";
 	icon = "/assets/icons/generic.svg";
 	console = false;
 	command =
-		'/usr/bin/vista.ajs --alert --message "Anura Shortcuts: This shortcut is not configured properly." --title Error';
+		'/usr/bin/vista.ajs --alert --message "Sirco Shortcuts: This shortcut is not configured properly." --title Error';
 
 	constructor(filePath: string, props: AnuraShortcut) {
 		super();
 		Object.assign(this, props);
-		this.package = "anura.shortcut." + b26(filePath);
+		this.package = "sirco.shortcut." + b26(filePath);
 		if (anura.apps[this.package]) {
 			if (anura.apps[this.package] instanceof ShortcutApp) {
 				// If the app is already a shortcut app, just return it

@@ -1,6 +1,6 @@
 class AboutApp extends App {
-	name = "About Anura";
-	package = "anura.about";
+	name = "About Sirco OS";
+	package = "sirco.about";
 	icon = "/assets/icons/aboutapp.png";
 
 	page = () => (
@@ -10,7 +10,7 @@ class AboutApp extends App {
 					class="aboutapp-logo-img"
 					title="Look what you've done"
 					on:click={() => {
-						anura.apps["anura.browser"].open([
+						anura.apps["sirco.browser"].open([
 							"https://www.youtube.com/watch?v=34Na4j8AVgA",
 						]);
 					}}
@@ -18,20 +18,20 @@ class AboutApp extends App {
 			</div>
 			<div class="aboutapp-logo-divider"></div>
 			<div class="aboutapp-content">
-				<p>AnuraOS</p>
+				<p>Sirco OS</p>
 				<p>
 					Version {anura.version.codename} ({anura.version.pretty}) (OS build{" "}
 					{this.getOSBuild()})
 				</p>
-				<p>© Mercury Workshop. All rights reserved.</p>
+				<p>© Sirco. All rights reserved.</p>
 				<br />
 				{$if(
 					anura.settings.get("x86-disabled"),
 					<p>
-						Anura x86 subsystem disabled. <br /> Enable it in{" "}
+						Sirco x86 subsystem disabled. <br /> Enable it in{" "}
 						<button
 							on:click={() => {
-								anura.apps["anura.settings"].open();
+								anura.apps["sirco.settings"].open();
 							}}
 							class="aboutapp-link-button"
 						>
@@ -39,15 +39,15 @@ class AboutApp extends App {
 						</button>
 						.
 					</p>,
-					<p>Anura x86 subsystem enabled.</p>,
+					<p>Sirco x86 subsystem enabled.</p>,
 				)}
 
 				<br />
 
 				{$if(
 					anura.settings.get("bootFromOPFS"),
-					<p>Anura is booting from OPFS.</p>,
-					<p>Anura OPFS boot disabled.</p>,
+					<p>Sirco is booting from OPFS.</p>,
+					<p>Sirco OPFS boot disabled.</p>,
 				)}
 
 				<br />
@@ -57,8 +57,8 @@ class AboutApp extends App {
 					This product is licensed under the{" "}
 					<button
 						on:click={() => {
-							anura.apps["anura.browser"].open([
-								"https://github.com/MercuryWorkshop/anuraOS/blob/main/LICENSE",
+							anura.apps["sirco.browser"].open([
+								"https://github.com/Sirco-web/Sirco-OS/blob/main/LICENSE",
 							]);
 						}}
 						class="aboutapp-link-button"

@@ -1,10 +1,10 @@
-# The Anura Internal API
+# The Sirco Internal API
 
-This document has a brief explanation of all the Anura JS APIs and how to use them.
+This document has a brief explanation of all the Sirco JS APIs and how to use them.
 
 ## anura.settings
 
-This API is used to define system settings in Anura, it is a key value store of JS objects.
+This API is used to define system settings in Sirco, it is a key value store of JS objects.
 
 ### Functions
 
@@ -15,7 +15,7 @@ This api allows you to get a value in the key value store.
 **Usage:**
 
 ```js
-anura.settings.get("applist"); // Get pinned apps in anura's taskbar
+anura.settings.get("applist"); // Get pinned apps in Sirco's taskbar
 ```
 
 #### anura.settings.set: `void`
@@ -35,18 +35,18 @@ This API is used to import libraries. These libraries are similar to apps and ca
 **Usage:**
 
 ```js
-const browser = await anura.import("anura.libbrowser");
+const browser = await anura.import("sirco.libbrowser");
 
 browser.openTab("https://google.com/");
 ```
 
-AnuraOS provides some preinstalled libraries to help streamline the development experience. This includes the browser library as shown above, along with the anura persistence library and the file picker.
+Sirco OS provides some preinstalled libraries to help streamline the development experience. This includes the browser library as shown above, along with the Sirco persistence library and the file picker.
 
 You can find the documentation for the preinstalled libraries [here](./appdevt.md#system-libraries).
 
 ## anura.x86
 
-This API provides access to Anura's x86 backend; Which is used to create PTYs, write directly to serial terminals (not recommended) or access v86 itself.
+This API provides access to Sirco's x86 backend; Which is used to create PTYs, write directly to serial terminals (not recommended) or access v86 itself.
 
 ### Properties
 

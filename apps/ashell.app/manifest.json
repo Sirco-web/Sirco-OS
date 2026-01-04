@@ -1,7 +1,7 @@
 {
-	"name": "Anura Shell",
+	"name": "Sirco Shell",
 	"type": "auto",
-	"package": "anura.ashell",
+	"package": "sirco.ashell",
 	"index": "term.html",
 	"icon": "term.png",
 	"wininfo": {

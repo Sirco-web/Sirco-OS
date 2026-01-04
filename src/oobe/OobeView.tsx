@@ -6,6 +6,7 @@ class OobeView {
 		offlineEnabled: true,
 		v86Enabled: false,
 		localfsdriver: false,
+		userfsdriver: false,
 		dlsize: "0MB",
 	});
 
@@ -149,7 +150,7 @@ class OobeView {
 		{
 			elm: (
 				<div class="screen" id="welcome">
-					<h1>Welcome to AnuraOS</h1>
+					<h1>Welcome to Sirco OS</h1>
 					<div id="subtitle">Effortless. Modern. Powerful.</div>
 					<div id="gridContent">
 						<img id="animation" src="assets/oobe/welcome.gif" />
@@ -167,7 +168,7 @@ class OobeView {
 			elm: (
 				<div class="screen" id="features">
 					<h1>Choose your experience</h1>
-					<div id="subtitle">What kind of Anura user are you?</div>
+					<div id="subtitle">What kind of Sirco user are you?</div>
 					<label class="matter-checkbox">
 						<input
 							type="checkbox"
@@ -177,7 +178,7 @@ class OobeView {
 					</label>
 					<div class="sub">
 						<span class="material-symbols-outlined">info</span>
-						&nbsp;This allows you to use AnuraOS without an internet connection.
+						&nbsp;This allows you to use Sirco OS without an internet connection.
 					</div>
 					<br></br>
 					<label class="matter-checkbox">
@@ -186,7 +187,20 @@ class OobeView {
 					</label>
 					<div class="sub">
 						<span class="material-symbols-outlined">info</span>
-						&nbsp;This allows you to run Linux applications on AnuraOS.
+						&nbsp;This allows you to run Linux applications on Sirco OS.
+					</div>
+					<br></br>
+					<label class="matter-checkbox">
+						<input
+							type="checkbox"
+							bind:checked={use(this.state.userfsdriver)}
+						/>
+						<span>Save to User Folder/USB Drive</span>
+					</label>
+					<div class="sub">
+						<span class="material-symbols-outlined">info</span>
+						&nbsp;Save all files to a folder you choose (like a USB drive).
+						Files persist even if you clear browser data.
 					</div>
 					<br></br>
 					<label class="matter-checkbox">
@@ -219,10 +233,22 @@ class OobeView {
 									anura.settings.set("use-sw-cache", this.state.offlineEnabled);
 									anura.settings.set("applist", [
 										...anura.settings.get("applist"),
-										this.state.v86Enabled ? "anura.term" : "anura.ashell",
+										this.state.v86Enabled ? "sirco.term" : "sirco.ashell",
 									]);
 
-									if (this.state.localfsdriver) {
+									// Handle UserFS - save to user folder/USB
+									if (this.state.userfsdriver && UserFS.isSupported()) {
+										const userFs = await UserFS.selectUserFolder("/");
+										if (userFs) {
+											await (window as any).idbKeyval.set("bootFromUserFS", true);
+											anura.fs.installProvider(userFs as any);
+											anura.notifications.add({
+												title: "Sirco OS",
+												description: "Files will be saved to your selected folder.",
+												timeout: 5000,
+											});
+										}
+									} else if (this.state.localfsdriver) {
 										await (window as any).idbKeyval.set("bootFromOPFS", true);
 										navigator.serviceWorker.controller?.postMessage({
 											anura_target: "anura.bootFromOPFS",
@@ -268,7 +294,7 @@ class OobeView {
 					<div id="assetsDiv" style="display:none;"></div>
 					<h1>Downloading assets</h1>
 					<div id="subtitle" style="color: white;">
-						For the best experience, AnuraOS needs to download required assets.
+						For the best experience, Sirco OS needs to download required assets.
 					</div>
 					<img src="/assets/oobe/spinner.gif" />
 					<br />

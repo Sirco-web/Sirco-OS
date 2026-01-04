@@ -82,7 +82,7 @@ const DisclosureGroup: Component<{
 
 class RegEdit extends App {
 	name = "Registry Editor";
-	package = "anura.regedit";
+	package = "sirco.regedit";
 	icon = "/assets/icons/regedit.svg";
 
 	css = css`

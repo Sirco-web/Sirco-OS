@@ -5,7 +5,7 @@ type WallpaperObject = {
 
 class WallpaperAndStyle extends App {
 	name = "Wallpaper & Style";
-	package = "anura.wallpaper";
+	package = "sirco.wallpaper";
 	icon = "/assets/icons/wallpaper.png";
 
 	libfilepicker: {

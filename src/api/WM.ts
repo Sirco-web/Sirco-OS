@@ -44,6 +44,6 @@ class WMAPI {
 	}
 
 	createGeneric(info: WindowInformation | string): WMWindow {
-		return this.create.call(this, anura.apps["anura.generic"], info);
+		return this.create.call(this, anura.apps["sirco.generic"], info);
 	}
 }

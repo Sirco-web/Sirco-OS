@@ -1,6 +1,6 @@
 class RecoveryApp extends App {
 	name = "Recovery";
-	package = "anura.recovery";
+	package = "sirco.recovery";
 	icon = "/assets/icons/verificationoff.png";
 
 	css = css`
@@ -94,13 +94,13 @@ class RecoveryApp extends App {
 				>
 					Powerwash
 				</button>
-				{/* Anura Shell Button */}
+				{/* Sirco Shell Button */}
 				<button
 					style="background: #2f2f2f;"
 					class="matter-button-contained"
 					title="Open a shell to help recover your system."
 					on:click={() => {
-						const term = anura.apps["anura.ashell"];
+						const term = anura.apps["sirco.ashell"];
 						if (term) {
 							term.open();
 						} else {
@@ -112,7 +112,7 @@ class RecoveryApp extends App {
 						}
 					}}
 				>
-					Anura Shell
+					Sirco Shell
 				</button>
 				{/* Invalidate Cache Button */}
 				{$if(
@@ -146,7 +146,7 @@ class RecoveryApp extends App {
 					class="matter-button-contained"
 					title="Open Registry Editor"
 					on:click={() => {
-						anura.apps["anura.regedit"].open();
+						anura.apps["sirco.regedit"].open();
 					}}
 				>
 					Registry Editor

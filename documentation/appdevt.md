@@ -1,10 +1,10 @@
-# The Hitchhiker's Guide to AnuraOS App Development
+# The Hitchhiker's Guide to Sirco OS App Development
 
 See [this document](./templates/template.app/README.md) for instructions on how to set up a basic iFrame app.
 
-## AnuraOS Apps
+## Sirco OS Apps
 
-AnuraOS apps are simple creatures. They live inside folders with the suffix `.app` and the resources specific to each app are contained within that folder.
+Sirco OS apps are simple creatures. They live inside folders with the suffix `.app` and the resources specific to each app are contained within that folder.
 
 ### Manifest
 
@@ -18,10 +18,10 @@ Each app contains a `manifest.json`, which defines the functionality of the app.
 
 - `package`: `String` - Package name (structured class-like, `organization.programname`). Required.
 - `index`: `String` - Path (from app directory) to the index HTML file. Required if `type` is `"auto"` - the iframe source will be set to this.
-- `icon`: `String` - Path (from app directory) to the application's icon. Optional but highly recommended. Anura will display this icon throughout the DE.
+- `icon`: `String` - Path (from app directory) to the application's icon. Optional but highly recommended. Sirco will display this icon throughout the DE.
 - `background`: Background color of iframe while it is loading. Optional.
 - `handler`: `String` - Path (from app directory) to a file containing JavaScript to execute at the top-level document. Required if `type` is `"manual"`, ignored otherwise - the top-level document will execute this file as JavaScript.
-- `useIdbWrapper`: `Boolean` - Use the IndexedDB wrapper, which prevents the app from making accidental modifications to other app's indexeddb stores or anura's own stores. Defaults to `false`. Optional.
+- `useIdbWrapper`: `Boolean` - Use the IndexedDB wrapper, which prevents the app from making accidental modifications to other app's indexeddb stores or Sirco's own stores. Defaults to `false`. Optional.
 - `wininfo`: `Object {title, width, height, resizable}` - Required if `type` is `"auto"`.
   - `wininfo.title`: `String` - The title of the program. Defaults to "". Optional.
   - `wininfo.width`: `String` - The default width, in pixels, of the program. Defaults to "1000px". Optional.
@@ -30,7 +30,7 @@ Each app contains a `manifest.json`, which defines the functionality of the app.
 
 ### Tips and Tricks
 
-- In iframed apps, Anura still gives you full access to the APIs through the `anura` object and also gives you access to your app instance and the Window in the Window Manager. You can access the WMWindow using `instanceWindow` and access your anura app instance using `instance` in your javascript. This could be used to manipulate the window or invoke actions on your app instance. An example is shown below where a back arrow is drawn on the window decorations in the marketplace app.
+- In iframed apps, Sirco still gives you full access to the APIs through the `anura` object and also gives you access to your app instance and the Window in the Window Manager. You can access the WMWindow using `instanceWindow` and access your Sirco app instance using `instance` in your javascript. This could be used to manipulate the window or invoke actions on your app instance. An example is shown below where a back arrow is drawn on the window decorations in the marketplace app.
 
 ```js
 const back = html`
@@ -116,7 +116,7 @@ win.onunmaximize: () => void;
 
 ```js
 if (instance.manifest.marketplace) {
-	let libstore = await anura.import("anura.libstore@2.0.0");
+	let libstore = await anura.import("sirco.libstore@2.0.0");
 
 	marketplace = new libstore.Store(anura.net, {
 		onError: (appName, error) => {
