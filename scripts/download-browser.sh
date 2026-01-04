@@ -8,21 +8,23 @@ SCRAM_REPO="https://raw.githubusercontent.com/Sirco-web/Scram-aurora/main/public
 BROWSER_DIR="public"
 EXTERNAL_SERVER="https://browser-app.is-a.lol"
 WISP_URL="wss://browser-app.is-a.lol/wisp/"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOWNLOAD_SCRIPT="$SCRIPT_DIR/download-file.js"
 
 echo "=== Downloading Scram-aurora browser files ==="
 
 # Create directory if needed
 mkdir -p "$BROWSER_DIR"
 
-# Download browser files
+# Download browser files using Node.js script (curl may not be available)
 echo "Downloading browser.html..."
-curl -sL "$SCRAM_REPO/index.html" -o "$BROWSER_DIR/browser.html"
+node "$DOWNLOAD_SCRIPT" "$SCRAM_REPO/index.html" "$BROWSER_DIR/browser.html"
 
 echo "Downloading browser.css..."
-curl -sL "$SCRAM_REPO/browser.css" -o "$BROWSER_DIR/browser.css"
+node "$DOWNLOAD_SCRIPT" "$SCRAM_REPO/browser.css" "$BROWSER_DIR/browser.css"
 
 echo "Downloading browser.js..."
-curl -sL "$SCRAM_REPO/browser.js" -o "$BROWSER_DIR/browser.js"
+node "$DOWNLOAD_SCRIPT" "$SCRAM_REPO/browser.js" "$BROWSER_DIR/browser.js"
 
 # Note: Sirco-OS uses anura-sw.js for service worker, so we don't need
 # register-sw.js or sw.js from Scram-aurora

@@ -130,7 +130,7 @@ build/libs/nfsadapter/nfsadapter.js: native-file-system-adapter/src/es6.js nativ
 
 build/assets/matter.css:
 	mkdir -p build/assets
-	curl https://github.com/finnhvman/matter/releases/latest/download/matter.css -L -o build/assets/matter.css
+	node scripts/download-file.js https://github.com/finnhvman/matter/releases/latest/download/matter.css build/assets/matter.css
 
 apps/libfileview.lib/icons: apps/libfileview.lib/icons.json
 	cd apps/libfileview.lib; bash geticons.sh
@@ -231,12 +231,12 @@ tsc:
 	
 css: src/*.css
 	# shopt -s globstar; cat src/**/*.css | npx postcss --use autoprefixer -o build/bundle.css
-	shopt -s globstar; cat src/**/*.css > build/bundle.css
+	find src -name "*.css" -type f -exec cat {} + > build/bundle.css
 lint:
 	npx prettier -w --log-level error .
 	npx eslint . --fix
 milestone:
-	uuidgen > build/MILESTONE
+	node -e "console.log(require('crypto').randomUUID())" > build/MILESTONE
 
 # prod: all
 #	npx google-closure-compiler --js build/lib/libv86.js build/assets/libs/filer.min.js build/lib/coreapps/ExternalApp.js build/lib/coreapps/x86MgrApp.js build/lib/coreapps/SettingsApp.js build/lib/coreapps/BrowserApp.js build/lib/v86.js build/lib/AliceWM.js build/lib/AliceJS.js build/lib/Taskbar.js build/lib/ContextMenu.js build/lib/api/ContextMenuAPI.js build/lib/Launcher.js build/lib/Bootsplash.js build/lib/oobe/OobeView.js build/lib/oobe/OobeWelcomeStep.js build/lib/oobe/OobeAssetsStep.js build/lib/Utils.js build/lib/Anura.js build/lib/api/Settings.js build/lib/api/NotificationService.js build/lib/Boot.js --js_output_file public/dist.js

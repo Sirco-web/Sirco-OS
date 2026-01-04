@@ -44,18 +44,47 @@ if (readLinesMode) {
         data = JSON.parse(fs.readFileSync(0, 'utf8'));
     }
 
-    // Simple query parser - supports .key, .key.subkey, del(), pipes
+    // Simple query parser - supports .key, .key.subkey, .key[], del(), pipes, string interpolation
     function evaluate(obj, q) {
         q = q.trim();
         
-        // Handle piped expressions
-        if (q.includes(' | ')) {
-            const parts = q.split(' | ');
-            let result = obj;
-            for (const part of parts) {
-                result = evaluate(result, part.trim());
+        // Handle piped expressions (but not inside string interpolation)
+        if (q.includes(' | ') && !q.includes('"\\(')) {
+            // Check if the pipe is inside a string
+            let inString = false;
+            let pipeIndex = -1;
+            for (let i = 0; i < q.length - 2; i++) {
+                if (q[i] === '"' && (i === 0 || q[i-1] !== '\\')) {
+                    inString = !inString;
+                }
+                if (!inString && q.substring(i, i + 3) === ' | ') {
+                    pipeIndex = i;
+                    break;
+                }
             }
-            return result;
+            if (pipeIndex !== -1) {
+                const firstPart = q.substring(0, pipeIndex);
+                const restPart = q.substring(pipeIndex + 3);
+                const firstResult = evaluate(obj, firstPart.trim());
+                
+                // If first result is array, apply rest to each element
+                if (Array.isArray(firstResult)) {
+                    const results = [];
+                    for (const item of firstResult) {
+                        results.push(evaluate(item, restPart.trim()));
+                    }
+                    return results;
+                }
+                return evaluate(firstResult, restPart.trim());
+            }
+        }
+        
+        // Handle string interpolation like "\(.source) \(.icon)"
+        if (q.startsWith('"') && q.endsWith('"') && q.includes('\\(')) {
+            const template = q.slice(1, -1);
+            return template.replace(/\\\(([^)]+)\)/g, (match, expr) => {
+                return evaluate(obj, '.' + expr);
+            });
         }
         
         // Handle del()
@@ -83,6 +112,12 @@ if (readLinesMode) {
             return { ...obj, [key]: value };
         }
         
+        // Handle .key[] (iterate over array)
+        if (q.match(/^\.[a-zA-Z_][a-zA-Z0-9_]*\[\]$/)) {
+            const key = q.slice(1, -2);
+            return obj[key] || [];
+        }
+        
         // Handle simple .key or .key.subkey
         if (q.startsWith('.')) {
             const keys = q.slice(1).split('.');
@@ -100,7 +135,18 @@ if (readLinesMode) {
 
     const result = evaluate(data, query);
     
-    if (typeof result === 'string' && rawOutput) {
+    // Handle array results (multiple outputs)
+    if (Array.isArray(result) && query.includes('[]')) {
+        for (const item of result) {
+            if (typeof item === 'string' && rawOutput) {
+                console.log(item);
+            } else if (typeof item === 'object') {
+                console.log(JSON.stringify(item, null, 2));
+            } else {
+                console.log(JSON.stringify(item));
+            }
+        }
+    } else if (typeof result === 'string' && rawOutput) {
         console.log(result);
     } else if (typeof result === 'object') {
         console.log(JSON.stringify(result, null, 2));

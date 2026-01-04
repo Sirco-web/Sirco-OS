@@ -4,13 +4,17 @@ if [ -d "icons" ]; then
   exit 0
 fi
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+JQ_SHIM="$SCRIPT_DIR/../../scripts/jq-shim.js"
+
 git clone https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git papirus
 mkdir icons
-icon_paths=$(jq -r '.files[] | "\(.source) \(.icon)"' icons.json)
+icon_paths=$(node "$JQ_SHIM" -r '.files[] | "\(.source) \(.icon)"' icons.json)
 while read -r source icon_path
 do
   cp "$source" "$icon_path"
 done <<< "$icon_paths"
-cp "$(jq -r '.defaultSource' icons.json)" "$(jq -r '.default' icons.json)" 
-cp "$(jq -r '.folderSource' icons.json)" "$(jq -r '.folder' icons.json)" 
+cp "$(node "$JQ_SHIM" -r '.defaultSource' icons.json)" "$(node "$JQ_SHIM" -r '.default' icons.json)" 
+cp "$(node "$JQ_SHIM" -r '.folderSource' icons.json)" "$(node "$JQ_SHIM" -r '.folder' icons.json)" 
 rm -rf papirus
