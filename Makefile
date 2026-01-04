@@ -154,10 +154,34 @@ rootfs: FORCE
 v86: libv86.js build/lib/v86.wasm
 	cp -r v86/bios public
 
-# Use FORCE to always check, since glob patterns don't work well as prerequisites
+# libv86.js is built by scripts/download-v86.sh using npm closure-compiler (no Java needed)
+# Just copy it to the build directory
 libv86.js: FORCE
 	@if [ ! -d "v86/src" ]; then echo "ERROR: v86/src not found"; exit 1; fi
-	cd v86; make build/libv86.js
+	@if [ -f "v86/build/libv86.js" ]; then \
+		echo "libv86.js already built, copying to build/lib"; \
+	else \
+		echo "Building libv86.js..."; \
+		cd v86 && npm install --no-save google-closure-compiler && \
+		npx google-closure-compiler \
+			--js_output_file build/libv86.js \
+			--define=DEBUG=false \
+			--generate_exports \
+			--externs src/externs.js \
+			--warning_level VERBOSE \
+			--jscomp_off=checkTypes \
+			--jscomp_off=missingProperties \
+			--use_types_for_optimization \
+			--assume_function_wrapper \
+			--summary_detail_level 3 \
+			--language_in ECMASCRIPT_2020 \
+			--language_out ECMASCRIPT_2020 \
+			--compilation_level SIMPLE \
+			--output_wrapper ';(function(){%output%}).call(this);' \
+			--js src/const.js src/config.js src/io.js src/main.js src/lib.js src/buffer.js src/ide.js src/pci.js src/floppy.js src/memory.js src/dma.js src/pit.js src/vga.js src/ps2.js src/rtc.js src/uart.js src/acpi.js src/apic.js src/ioapic.js src/state.js src/ne2k.js src/sb16.js src/virtio.js src/virtio_console.js src/virtio_net.js src/virtio_balloon.js src/bus.js src/log.js src/cpu.js src/debug.js src/elf.js src/kernel.js \
+			--js src/browser/screen.js src/browser/keyboard.js src/browser/mouse.js src/browser/speaker.js src/browser/serial.js src/browser/network.js src/browser/starter.js src/browser/worker_bus.js src/browser/dummy_screen.js src/browser/inbrowser_network.js src/browser/fake_network.js src/browser/wisp_network.js src/browser/fetch_network.js src/browser/print_stats.js src/browser/filestorage.js \
+			--js lib/9p-filer.js lib/filesystem.js lib/jor1k.js lib/marshall.js; \
+	fi
 	mkdir -p build/lib
 	cp v86/build/libv86.js build/lib/libv86.js
 
