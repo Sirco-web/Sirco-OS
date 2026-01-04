@@ -185,9 +185,23 @@ libv86.js: FORCE
 	mkdir -p build/lib
 	cp v86/build/libv86.js build/lib/libv86.js
 
-build/lib/v86.wasm: $(RUST_FILES) v86/build/softfloat.o v86/build/zstddeclib.o v86/Cargo.toml
-	cd v86; make build/v86.wasm
-	cp v86/build/v86.wasm build/lib/v86.wasm
+# v86.wasm is either pre-built (downloaded) or needs clang+rust to build
+# Check if it already exists (from download script) before trying to build
+build/lib/v86.wasm: FORCE
+	@if [ -f "v86/build/v86.wasm" ]; then \
+		echo "v86.wasm already exists, copying to build/lib"; \
+		mkdir -p build/lib; \
+		cp v86/build/v86.wasm build/lib/v86.wasm; \
+	elif command -v clang >/dev/null 2>&1 && command -v cargo >/dev/null 2>&1; then \
+		echo "Building v86.wasm with clang and rust..."; \
+		cd v86 && make build/v86.wasm; \
+		mkdir -p ../build/lib; \
+		cp build/v86.wasm ../build/lib/v86.wasm; \
+	else \
+		echo "ERROR: v86.wasm not found and clang/rust not available to build it"; \
+		echo "Please run scripts/download-v86.sh to download pre-built v86.wasm"; \
+		exit 1; \
+	fi
 
 build/cache-load.json: FORCE
 	(find apps/ -type f && cd build/ && find lib/ -type f && find libs/ -type f && find uv/ -type f && find assets/ -type f && find bundle.css -type f && cd ../public/ && find . -type f)| grep -v -e node_modules -e \.map -e \.d\.ts -e "/\." -e "uv/" -e "workbox/" | jq -Rnc '[inputs]' > build/cache-load.json
@@ -250,10 +264,27 @@ v86/src/rust/gen/analyzer.rs:
 	cd v86; make src/rust/gen/analyzer.rs
 v86/src/rust/gen/analyzer0f.rs: 
 	cd v86; make src/rust/gen/analyzer0f.rs
+
+# These object files require clang to build - skip if they already exist (from download)
 v86/build/softfloat.o:
-	cd v86; make build/softfloat.o
+	@if [ ! -f "v86/build/softfloat.o" ]; then \
+		if command -v clang >/dev/null 2>&1; then \
+			cd v86 && make build/softfloat.o; \
+		else \
+			echo "WARNING: clang not found, creating placeholder softfloat.o"; \
+			mkdir -p v86/build && touch v86/build/softfloat.o; \
+		fi \
+	fi
+
 v86/build/zstddeclib.o:
-	cd v86; make build/zstddeclib.o
+	@if [ ! -f "v86/build/zstddeclib.o" ]; then \
+		if command -v clang >/dev/null 2>&1; then \
+			cd v86 && make build/zstddeclib.o; \
+		else \
+			echo "WARNING: clang not found, creating placeholder zstddeclib.o"; \
+			mkdir -p v86/build && touch v86/build/zstddeclib.o; \
+		fi \
+	fi
 
 
 FORCE: ;

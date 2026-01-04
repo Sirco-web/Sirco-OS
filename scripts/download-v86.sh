@@ -91,6 +91,40 @@ npx google-closure-compiler \
 echo "libv86.js built successfully!"
 ls -lh build/libv86.js
 
+# Download pre-built v86.wasm (requires clang + rust which aren't available in Docker)
+echo "Downloading pre-built v86.wasm..."
+# Using the upstream v86 release which has pre-built wasm files
+V86_RELEASE_URL="https://github.com/copy/v86/releases/download/latest/v86.wasm"
+node -e "
+const https = require('https');
+const fs = require('fs');
+
+function downloadFile(url, dest, callback) {
+  const file = fs.createWriteStream(dest);
+  https.get(url, (res) => {
+    if (res.statusCode === 301 || res.statusCode === 302) {
+      downloadFile(res.headers.location, dest, callback);
+    } else if (res.statusCode === 200) {
+      res.pipe(file);
+      file.on('finish', () => { file.close(callback); });
+    } else {
+      console.error('Download failed with status:', res.statusCode);
+      process.exit(1);
+    }
+  }).on('error', (e) => { console.error('Download error:', e); process.exit(1); });
+}
+
+downloadFile('$V86_RELEASE_URL', 'build/v86.wasm', () => console.log('v86.wasm downloaded'));
+"
+
+# Also create dummy .o files so make doesn't try to build them
+echo "Creating placeholder object files..."
+touch build/softfloat.o
+touch build/zstddeclib.o
+
+echo "v86.wasm downloaded successfully!"
+ls -lh build/v86.wasm
+
 cd "$PROJECT_ROOT"
 
 echo "v86 downloaded and built successfully!"
