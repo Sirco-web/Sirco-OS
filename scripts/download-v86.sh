@@ -36,6 +36,25 @@ GIT_SSL_NO_VERIFY=true git clone --depth 1 "$V86_REPO" "$V86_DIR"
 cd "$V86_DIR"
 GIT_SSL_NO_VERIFY=true git fetch --depth 1 origin "$V86_COMMIT"
 git checkout "$V86_COMMIT"
+
+# Download closure-compiler.jar using Node.js (wget/curl not available in Docker)
+echo "Downloading closure-compiler.jar..."
+mkdir -p closure-compiler
+CLOSURE_URL="https://repo1.maven.org/maven2/com/google/javascript/closure-compiler/v20210601/closure-compiler-v20210601.jar"
+node -e "
+const https = require('https');
+const fs = require('fs');
+const file = fs.createWriteStream('closure-compiler/compiler.jar');
+https.get('$CLOSURE_URL', (res) => {
+  if (res.statusCode === 301 || res.statusCode === 302) {
+    https.get(res.headers.location, (res2) => res2.pipe(file));
+  } else {
+    res.pipe(file);
+  }
+  file.on('finish', () => { file.close(); console.log('closure-compiler.jar downloaded'); });
+}).on('error', (e) => { console.error('Download failed:', e); process.exit(1); });
+"
+
 cd "$PROJECT_ROOT"
 
 echo "v86 downloaded successfully!"
