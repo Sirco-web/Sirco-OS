@@ -6,11 +6,8 @@ set -e
 
 echo "=== Sirco-OS Submodule Setup ==="
 
-# Disable SSL verification if needed (for Docker/CI environments)
-if [ "${DISABLE_SSL_VERIFY:-false}" = "true" ]; then
-    echo "Disabling SSL verification..."
-    git config --global http.sslVerify false
-fi
+# Disable SSL verification for Docker/CI environments without ca-certificates
+export GIT_SSL_NO_VERIFY=true
 
 # Function to clone submodule manually if git submodule update fails
 clone_submodule() {
@@ -56,8 +53,6 @@ else
     clone_submodule "native-file-system-adapter" "https://github.com/MercuryWorkshop/native-file-system-adapter/" ""
     clone_submodule "x86_image_wizard/epoxy" "https://github.com/MercuryWorkshop/epoxy-tls" ""
 fi
-
-# Re-enable SSL verification
 if [ "${DISABLE_SSL_VERIFY:-false}" = "true" ]; then
     git config --global http.sslVerify true
 fi
